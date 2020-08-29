@@ -5,15 +5,21 @@
     "jest": true
   },
   "extends": [
-    "standard"
+    "airbnb-base"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 11,
-    "sourceType": "module"
+    "ecmaVersion": 11
   },
   "plugins": [
     "@typescript-eslint"
   ],
-  "rules": {}
+  "rules": {
+    "class-methods-use-this": "off",
+    "import/no-unresolved": "off",
+    "no-unused-vars": "off",
+    "import/extensions": "off",
+    "no-console": "off",
+    "import/prefer-default-export": "off"
+  }
 }
