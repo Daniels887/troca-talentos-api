@@ -4,6 +4,14 @@ import { getRepository } from 'typeorm';
 import User from '@models/Users';
 
 class UsersController {
+  async index(req: Request, res: Response) {
+    const repository = getRepository(User);
+
+    const allUsers = await repository.find();
+
+    return res.json(allUsers);
+  }
+
   async store(req: Request, res: Response) {
     const repository = getRepository(User);
 
