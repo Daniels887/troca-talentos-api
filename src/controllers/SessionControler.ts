@@ -26,10 +26,12 @@ class SessionController {
     // trocar esse secret, para um atributo no meu .env
     const token = jwt.sign({ id: user.id }, 'secret', { expiresIn: '1d' });
 
-    delete user.password;
-
     return res.json({
-      user,
+      user: {
+        id: user.id,
+        email: user.email,
+        hours: user.hours,
+      },
       token,
     });
   }

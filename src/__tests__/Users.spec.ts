@@ -23,6 +23,6 @@ describe('testing endpoints of users', () => {
 
     expect(response.body).toHaveProperty('id');
     expect(response.body.email).toEqual('teste@hotmail.com');
-    expect(response.body.password).toEqual('123445');
+    expect(response.body.password).not.toEqual('123445');
   });
 });
