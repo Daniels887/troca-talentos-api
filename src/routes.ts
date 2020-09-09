@@ -15,6 +15,7 @@ router.use(authMiddleware);
 
 router.get('/users', UserController.index);
 
+router.get('/tender/:id', TendersController.index);
 router.post('/tender', TendersController.store);
 
 export default router;

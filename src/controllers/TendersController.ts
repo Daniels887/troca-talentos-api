@@ -8,9 +8,14 @@ class TendersController {
   async index(req: Request, res: Response) {
     const tendersRepository = getRepository(Tenders);
 
-    // const allUsers = await repository.find();
+    const allTenders = await tendersRepository.find({
+      where: [
+        { id_provider: req.params.id },
+        { id_contractor: req.params.id },
+      ],
+    });
 
-    // return res.json(allUsers);
+    return res.json(allTenders);
   }
 
   async store(req: Request, res: Response) {
