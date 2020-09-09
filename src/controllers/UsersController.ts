@@ -23,7 +23,7 @@ class UsersController {
       return res.sendStatus(409);
     }
 
-    const user = repository.create({ email, password, hours: '3:00' });
+    const user = repository.create({ email, password, tcoin: 5 });
 
     await repository.save(user);
 

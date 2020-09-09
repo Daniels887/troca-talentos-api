@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
 import './database/connect';
+import cors from 'cors';
 import routes from './routes';
 
 class App {
@@ -8,6 +9,7 @@ class App {
 
   constructor() {
     this.server = express();
+    this.server.use(cors());
     this.middlewares();
     this.routes();
   }

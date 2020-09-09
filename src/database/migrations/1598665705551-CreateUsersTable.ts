@@ -24,8 +24,8 @@ export class CreateUsersTable1598665705551 implements MigrationInterface {
           type: 'varchar',
         },
         {
-          name: 'hours',
-          type: 'time',
+          name: 'tcoin',
+          type: 'integer',
         },
       ],
     }));

@@ -30,7 +30,7 @@ class SessionController {
       user: {
         id: user.id,
         email: user.email,
-        hours: user.hours,
+        tcoin: user.tcoin,
       },
       token,
     });

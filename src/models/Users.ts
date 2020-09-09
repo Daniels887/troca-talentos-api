@@ -14,8 +14,8 @@ export class User {
   @Column()
   password: string
 
-  @Column('time')
-  hours: string
+  @Column('integer')
+  tcoin: number
 
   @BeforeInsert()
   @BeforeUpdate()
