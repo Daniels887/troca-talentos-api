@@ -9,6 +9,7 @@ export class CreateTendersTable1599619422821 implements MigrationInterface {
           name: 'id',
           type: 'int',
           isPrimary: true,
+          isGenerated: true,
           generationStrategy: 'increment',
         },
         {
@@ -26,6 +27,7 @@ export class CreateTendersTable1599619422821 implements MigrationInterface {
         {
           name: 'date',
           type: 'timestamp',
+          default: 'now()',
         },
       ],
     }));

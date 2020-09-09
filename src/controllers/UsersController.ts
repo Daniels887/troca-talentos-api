@@ -23,7 +23,9 @@ class UsersController {
       return res.sendStatus(409);
     }
 
-    const user = repository.create({ email, password, tcoin: 5 });
+    const user = repository.create({
+      email, password, tcoin: 5, avatar: '',
+    });
 
     await repository.save(user);
 

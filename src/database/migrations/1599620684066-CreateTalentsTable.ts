@@ -11,6 +11,7 @@ export class CreateTalentsTable1599620684066 implements MigrationInterface {
           name: 'id',
           type: 'int',
           isPrimary: true,
+          isGenerated: true,
           generationStrategy: 'increment',
         },
         {

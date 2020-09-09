@@ -17,6 +17,9 @@ export class User {
   @Column('integer')
   tcoin: number
 
+  @Column()
+  avatar: string
+
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
