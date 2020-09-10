@@ -17,6 +17,12 @@ class TalentsController {
       return res.status(409).json({ error: 'User not exists' });
     }
 
+    const talentExist = await talentsRepository.find({ where: { user: userId, talent } });
+
+    if (talentExist.length) {
+      return res.status(409).json({ error: 'Talent already exist' });
+    }
+
     const newTalent = talentsRepository.create({ user: userId, talent });
 
     await talentsRepository.save(newTalent);
