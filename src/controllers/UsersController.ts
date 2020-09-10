@@ -15,19 +15,17 @@ class UsersController {
   async store(req: Request, res: Response) {
     const repository = getRepository(User);
 
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    const userExists = await repository.findOne({ where: { email } });
+    const userExists = await repository.findOne({ where: [{ email }, { username }] });
 
     if (userExists) {
-      return res.sendStatus(409);
+      return res.status(409).json({ error: 'Username or email already in use' });
     }
 
     const user = repository.create({
-      email, password, tcoin: 5, avatar: '',
+      username, email, password, tcoin: 5, avatar: '',
     });
-
-    console.log(user);
 
     await repository.save(user);
 
@@ -51,7 +49,7 @@ class UsersController {
 
     await Mail.sendMail({
       to: {
-        name: user?.email || '',
+        name: user?.username || '',
         address: user?.email || '',
       },
       from: {
@@ -61,7 +59,7 @@ class UsersController {
       subject: 'Recuperação de senha - Troca Talentos',
       template: 'recovery',
       context: {
-        email: user.email,
+        username: user.username,
         password: user.password,
       },
     });
