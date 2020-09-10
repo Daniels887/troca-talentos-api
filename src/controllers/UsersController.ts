@@ -59,7 +59,11 @@ class UsersController {
         address: 'equipe@trocatalentos.com.br',
       },
       subject: 'Recuperação de senha - Troca Talentos',
-      body: `<p>Sua nova senha é: ${randomPassword} não esqueça de altera-lá </p><br/>Equipe Troca Talentos`,
+      template: 'recovery',
+      context: {
+        email: user.email,
+        password: user.password,
+      },
     });
 
     return res.json({ message: 'E-mail enviado com sucesso!' });
