@@ -60,7 +60,7 @@ class UsersController {
       template: 'recovery',
       context: {
         username: user.username,
-        password: user.password,
+        password: randomPassword,
       },
     });
 
