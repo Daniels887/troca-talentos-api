@@ -29,6 +29,11 @@ export class CreateTendersTable1599619422821 implements MigrationInterface {
           type: 'timestamp',
           default: 'now()',
         },
+        {
+          name: 'accepted',
+          type: 'boolean',
+          default: false,
+        },
       ],
     }));
   }
