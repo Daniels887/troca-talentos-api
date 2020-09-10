@@ -4,8 +4,8 @@ import {
 
 @Entity('tenders')
 export class Tenders {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
+  @PrimaryGeneratedColumn('increment')
+  id: number
 
   @Column()
   id_provider: string

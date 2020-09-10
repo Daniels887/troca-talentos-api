@@ -1,7 +1,8 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate,
+  Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToMany,
 } from 'typeorm';
 import bcrypt from 'bcryptjs';
+import Talents from './Talents';
 
 @Entity('users')
 export class User {
@@ -19,6 +20,9 @@ export class User {
 
   @Column()
   avatar: string
+
+  @OneToMany((type) => Talents, (user) => User)
+  talents: Talents[]
 
   @BeforeInsert()
   @BeforeUpdate()

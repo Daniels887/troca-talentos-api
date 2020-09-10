@@ -15,7 +15,7 @@ export class CreateTalentsTable1599620684066 implements MigrationInterface {
           generationStrategy: 'increment',
         },
         {
-          name: 'id_user',
+          name: 'userId',
           type: 'uuid',
         },
         {
@@ -26,7 +26,7 @@ export class CreateTalentsTable1599620684066 implements MigrationInterface {
     }));
 
     await queryRunner.createForeignKey('talents', new TableForeignKey({
-      columnNames: ['id_user'],
+      columnNames: ['userId'],
       referencedColumnNames: ['id'],
       referencedTableName: 'users',
       onDelete: 'CASCADE',

@@ -4,6 +4,7 @@ import UserController from '@controllers/UsersController';
 import SessionControler from '@controllers/SessionControler';
 
 import TendersController from '@controllers/TendersController';
+import TalentsController from '@controllers/TalentsController';
 import authMiddleware from './middlewares/auth';
 
 const router = Router();
@@ -17,5 +18,8 @@ router.get('/users', UserController.index);
 
 router.get('/tender/:id', TendersController.index);
 router.post('/tender', TendersController.store);
+
+router.post('/talent', TalentsController.store);
+router.get('/user/:talent', UserController.showUsersByTalent);
 
 export default router;
