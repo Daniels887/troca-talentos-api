@@ -23,6 +23,17 @@ class TalentsController {
 
     return res.json(newTalent);
   }
+
+  async showUsersByTalent(req: Request, res: Response) {
+    const talentRepository = getRepository(Talents);
+
+    const allUsersFilteredByTalent = await talentRepository.find({
+      where:
+      { talent: req.params.title },
+    });
+
+    return res.json(allUsersFilteredByTalent);
+  }
 }
 
 export default new TalentsController();

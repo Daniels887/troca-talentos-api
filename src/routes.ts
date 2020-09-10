@@ -20,6 +20,6 @@ router.get('/tender/:id', TendersController.index);
 router.post('/tender', TendersController.store);
 
 router.post('/talent', TalentsController.store);
-router.get('/user/:talent', UserController.showUsersByTalent);
+router.get('/talent/:title', TalentsController.showUsersByTalent);
 
 export default router;
