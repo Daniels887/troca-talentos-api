@@ -12,6 +12,8 @@ const router = Router();
 router.post('/users', UserController.store);
 router.post('/auth', SessionControler.store);
 
+router.post('/forgotPassword', UserController.passwordRecovery);
+
 router.use(authMiddleware);
 
 router.get('/users', UserController.index);
