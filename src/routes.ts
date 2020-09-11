@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
 import UserController from '@controllers/UsersController';
-import SessionControler from '@controllers/SessionControler';
+import SessionControler from '@controllers/SessionController';
 
 import TendersController from '@controllers/TendersController';
 import TalentsController from '@controllers/TalentsController';
+import SchedulesController from '@controllers/SchedulesController';
 import authMiddleware from './middlewares/auth';
 
 const router = Router();
@@ -23,5 +24,7 @@ router.post('/tender', TendersController.store);
 
 router.post('/talent', TalentsController.store);
 router.get('/talent/:title', TalentsController.showUsersByTalent);
+
+router.post('/schedule', SchedulesController.store);
 
 export default router;
