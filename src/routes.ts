@@ -26,5 +26,6 @@ router.post('/talent', TalentsController.store);
 router.get('/talent/:title', TalentsController.showUsersByTalent);
 
 router.post('/schedule', SchedulesController.store);
+router.get('/schedules/:id', SchedulesController.show_by_id);
 
 export default router;

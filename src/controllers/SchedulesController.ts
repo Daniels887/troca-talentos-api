@@ -3,12 +3,10 @@ import { getRepository } from 'typeorm';
 import { format, parseISO, compareAsc } from 'date-fns';
 
 import Schedules from '@models/Schedules';
-import Users from '@models/Users';
 
 class SchedulesController {
   async store(req: Request, res: Response) {
     const schedulesRepository = getRepository(Schedules);
-    const usersRepository = getRepository(Users);
 
     const { id_provider, id_contractor, date } = req.body;
 
@@ -37,6 +35,17 @@ class SchedulesController {
     await schedulesRepository.save(newSchedule);
 
     return res.json(newSchedule);
+  }
+
+  async show_by_id(req: Request, res: Response) {
+    const schedulesRepository = getRepository(Schedules);
+
+    const schedulesOfUser = await schedulesRepository.find({
+      where: [{ id_provider: req.params.id },
+        { id_contractor: req.params.id }],
+    });
+
+    return res.json(schedulesOfUser);
   }
 }
 
