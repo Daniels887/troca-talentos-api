@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
-import Tenders from '@models/Tenders';
+import Proposals from '@models/Proposal';
 import Users from '@models/Users';
 
-class TendersController {
+class ProposalsController {
   async index(req: Request, res: Response) {
-    const tendersRepository = getRepository(Tenders);
+    const proposalsRepository = getRepository(Proposals);
 
-    const allTenders = await tendersRepository.find({
+    const allTenders = await proposalsRepository.find({
       where: [
         { id_provider: req.params.id },
         { id_contractor: req.params.id },
@@ -19,7 +19,7 @@ class TendersController {
   }
 
   async store(req: Request, res: Response) {
-    const tendersRepository = getRepository(Tenders);
+    const proposalsRepository = getRepository(Proposals);
     const usersRepository = getRepository(Users);
 
     const { id_provider, id_contractor, tcoin } = req.body;
@@ -32,12 +32,12 @@ class TendersController {
       return res.status(409).json({ error: 'Provider or contractor not exist' });
     }
 
-    const tender = tendersRepository.create({ id_provider, id_contractor, tcoin });
+    const tender = proposalsRepository.create({ id_provider, id_contractor, tcoin });
 
-    await tendersRepository.save(tender);
+    await proposalsRepository.save(tender);
 
     return res.json(tender);
   }
 }
 
-export default new TendersController();
+export default new ProposalsController();

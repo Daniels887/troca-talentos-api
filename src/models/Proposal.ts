@@ -2,8 +2,8 @@ import {
   Entity, PrimaryGeneratedColumn, Column,
 } from 'typeorm';
 
-@Entity('tenders')
-export class Tenders {
+@Entity('proposals')
+export class Proposals {
   @PrimaryGeneratedColumn('increment')
   id: number
 
@@ -20,4 +20,4 @@ export class Tenders {
   date: Date
 }
 
-export default Tenders;
+export default Proposals;

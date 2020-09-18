@@ -4,7 +4,7 @@ import multer from 'multer';
 import UserController from '@controllers/UsersController';
 import SessionControler from '@controllers/SessionController';
 
-import TendersController from '@controllers/TendersController';
+import ProposalsController from '@controllers/ProposalsController';
 import TalentsController from '@controllers/TalentsController';
 import SchedulesController from '@controllers/SchedulesController';
 import multerConfig from './config/multer';
@@ -23,8 +23,8 @@ router.use(authMiddleware);
 router.get('/users', UserController.index);
 router.patch('/user/:id', upload.single('file'), UserController.update);
 
-router.get('/tender/:id', TendersController.index);
-router.post('/tender', TendersController.store);
+router.get('/tender/:id', ProposalsController.index);
+router.post('/tender', ProposalsController.store);
 
 router.post('/talent', TalentsController.store);
 router.get('/talent/:title', TalentsController.showUsersByTalent);
