@@ -23,8 +23,8 @@ router.use(authMiddleware);
 router.get('/users', UserController.index);
 router.patch('/user/:id', upload.single('file'), UserController.update);
 
-router.get('/tender/:id', ProposalsController.index);
-router.post('/tender', ProposalsController.store);
+router.get('/proposal/:id', ProposalsController.index);
+router.post('/proposal', ProposalsController.store);
 
 router.post('/talent', TalentsController.store);
 router.get('/talent/:title', TalentsController.showUsersByTalent);
