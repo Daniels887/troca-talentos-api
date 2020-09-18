@@ -6,10 +6,10 @@
   "password": "postgres",
   "database": "troca_talentos",
   "entities": [
-    "src/models/*.ts"
+    "src/models/*.{ts,js}"
   ],
   "migrations": [
-    "src/database/migrations/*.ts"
+    "src/database/migrations/*.{ts,js}"
   ],
   "cli": {
     "migrationsDir": "src/database/migrations"

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Users from '@models/Users';
-import Mail from 'src/lib/Mail';
+import Mail from '../lib/Mail';
 
 class UsersController {
   async index(req: Request, res: Response) {
