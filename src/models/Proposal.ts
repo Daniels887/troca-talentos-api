@@ -18,6 +18,9 @@ export class Proposals {
 
   @Column('timestamp')
   date: Date
+
+  @Column()
+  accepted: Boolean
 }
 
 export default Proposals;

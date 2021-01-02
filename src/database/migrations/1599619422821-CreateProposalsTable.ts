@@ -32,7 +32,6 @@ export class CreateProposalsTable1599619422821 implements MigrationInterface {
         {
           name: 'accepted',
           type: 'boolean',
-          default: false,
         },
       ],
     }));

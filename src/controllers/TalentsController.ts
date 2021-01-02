@@ -19,9 +19,9 @@ class TalentsController {
       return res.status(409).json({ error: 'User not exists' });
     }
 
-    const talentExist = await talentsRepository.find({ where: { user: userId, talent } });
+    const talentExist = await talentsRepository.findOne({ where: { user: userId, talent } });
 
-    if (talentExist.length) {
+    if (talentExist) {
       return res.status(409).json({ error: 'Talent already exist' });
     }
 
@@ -48,25 +48,25 @@ class TalentsController {
   async update(req: Request, res: Response) {
     const talentsRepository = getRepository(Talents);
 
-    const currentTalent = await talentsRepository.find({ where: { id: req.params.id } });
+    const currentTalent = await talentsRepository.findOne({ where: { id: req.params.id } });
 
-    if (!currentTalent.length) {
+    if (!currentTalent) {
       return res.status(409).json({ error: 'Talent not exists' });
     }
 
     if (req.file) {
       const { filename: path } = req.file;
-      currentTalent[0].banner = path;
+      currentTalent.banner = path;
     }
 
     const { talent, description, rating } = req.body;
 
-    const ratingMean = currentTalent[0].rating === 0 ? rating
-      : (currentTalent[0].rating + parseInt(rating, 10)) / 2;
+    const ratingMean = currentTalent.rating === 0 ? rating
+      : (currentTalent.rating + parseInt(rating, 10)) / 2;
 
-    currentTalent[0].talent = talent;
-    currentTalent[0].description = description;
-    currentTalent[0].rating = Math.round(ratingMean);
+    currentTalent.talent = talent;
+    currentTalent.description = description;
+    currentTalent.rating = Math.round(ratingMean);
 
     await talentsRepository.save(currentTalent);
 
