@@ -1,5 +1,5 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn,
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne,
 } from 'typeorm';
 import { User } from './Users';
 
@@ -10,6 +10,15 @@ export class Talents {
 
   @Column()
   talent: string
+
+  @Column()
+  banner: string
+
+  @Column()
+  rating: number
+
+  @Column()
+  description: string
 
   @ManyToOne((type) => User, (talents) => Talents, { eager: true })
   user: User

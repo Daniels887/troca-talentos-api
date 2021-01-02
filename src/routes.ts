@@ -27,6 +27,7 @@ router.get('/proposal/:id', ProposalsController.index);
 router.post('/proposal', ProposalsController.store);
 
 router.post('/talent', TalentsController.store);
+router.patch('/talent/:id', upload.single('file'), TalentsController.update);
 router.get('/talent/:title', TalentsController.showUsersByTalent);
 
 router.post('/schedule', SchedulesController.store);

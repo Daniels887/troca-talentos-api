@@ -22,6 +22,18 @@ export class CreateTalentsTable1599620684066 implements MigrationInterface {
           name: 'talent',
           type: 'varchar',
         },
+        {
+          name: 'banner',
+          type: 'varchar',
+        },
+        {
+          name: 'rating',
+          type: 'float',
+        },
+        {
+          name: 'description',
+          type: 'varchar',
+        },
       ],
     }));
 

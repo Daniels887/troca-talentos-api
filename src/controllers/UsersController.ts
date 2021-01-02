@@ -35,7 +35,7 @@ class UsersController {
   async passwordRecovery(req: Request, res: Response) {
     const repository = getRepository(Users);
 
-    const user = await repository.findOne({ where: { id: req.body.id } });
+    const user = await repository.findOne({ where: { email: req.body.email } });
 
     if (!user) {
       return res.status(409).json({ error: 'User not exists' });
