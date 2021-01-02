@@ -22,7 +22,9 @@ class ProposalsController {
     const proposalsRepository = getRepository(Proposals);
     const usersRepository = getRepository(Users);
 
-    const { id_provider, id_contractor, tcoin } = req.body;
+    const {
+      id_provider, id_contractor, tcoin, date,
+    } = req.body;
 
     const existUserProvider = await usersRepository.findOne({ where: { id: id_provider } });
 
@@ -32,7 +34,9 @@ class ProposalsController {
       return res.status(409).json({ error: 'Provider or contractor not exist' });
     }
 
-    const tender = proposalsRepository.create({ id_provider, id_contractor, tcoin });
+    const tender = proposalsRepository.create({
+      id_provider, id_contractor, tcoin, date,
+    });
 
     await proposalsRepository.save(tender);
 
