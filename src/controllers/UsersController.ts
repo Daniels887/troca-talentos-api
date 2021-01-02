@@ -88,7 +88,7 @@ class UsersController {
     user.username = username;
     user.email = email;
     user.password = password;
-    user.age = age;
+    user.age = parseInt(age, 10);
 
     await repository.save(user);
 
