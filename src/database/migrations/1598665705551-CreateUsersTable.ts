@@ -36,6 +36,10 @@ export class CreateUsersTable1598665705551 implements MigrationInterface {
           name: 'avatar',
           type: 'varchar',
         },
+        {
+          name: 'age',
+          type: 'integer',
+        },
       ],
     }));
   }

@@ -24,6 +24,9 @@ export class User {
   @Column()
   avatar: string
 
+  @Column()
+  age: number
+
   @OneToMany((type) => Talents, (user) => User)
   talents: Talents[]
 

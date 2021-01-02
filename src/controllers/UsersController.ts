@@ -15,7 +15,9 @@ class UsersController {
   async store(req: Request, res: Response) {
     const repository = getRepository(Users);
 
-    const { username, email, password } = req.body;
+    const {
+      username, email, password, age,
+    } = req.body;
 
     const userExists = await repository.findOne({ where: [{ email }, { username }] });
 
@@ -24,7 +26,7 @@ class UsersController {
     }
 
     const user = repository.create({
-      username, email, password, tcoin: 5, avatar: '',
+      username, email, password, age, tcoin: 5, avatar: '',
     });
 
     await repository.save(user);
@@ -70,7 +72,9 @@ class UsersController {
   async update(req: Request, res: Response) {
     const repository = getRepository(Users);
 
-    const { username, email, password } = req.body;
+    const {
+      username, email, password, age,
+    } = req.body;
 
     const user = await repository.findOne({ where: { id: req.params.id } });
 
@@ -84,6 +88,7 @@ class UsersController {
     user.username = username;
     user.email = email;
     user.password = password;
+    user.age = age;
 
     await repository.save(user);
 
