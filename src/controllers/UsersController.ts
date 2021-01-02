@@ -70,15 +70,20 @@ class UsersController {
   async update(req: Request, res: Response) {
     const repository = getRepository(Users);
 
-    const { filename: path } = req.file;
+    const { username, email, password } = req.body;
 
     const user = await repository.findOne({ where: { id: req.params.id } });
 
     if (!user) {
       return res.status(409).json({ error: 'User not exists' });
     }
-
-    user.avatar = path;
+    if (req.file) {
+      const { filename: path } = req.file;
+      user.avatar = path;
+    }
+    user.username = username;
+    user.email = email;
+    user.password = password;
 
     await repository.save(user);
 
