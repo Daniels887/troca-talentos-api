@@ -48,9 +48,11 @@ class ProposalsController {
     const proposalsRepository = getRepository(Proposals);
     const scheduleRepository = getRepository(Schedules);
 
+    const { accepted } = req.body;
+
     const proposal = await proposalsRepository.findOne({
       where: {
-        id_provider: req.params.id_provider,
+        id: req.params.id_proposal,
       },
     });
 
@@ -58,21 +60,27 @@ class ProposalsController {
       return res.status(409).json({ error: 'User is not a provider' });
     }
 
-    const { accepted } = req.body;
+    if (proposal.accepted && accepted) {
+      return res.status(409).json({ error: 'Proposal already accepted' });
+    }
+
+    if (!proposal.accepted) {
+      await proposalsRepository.delete(proposal);
+
+      return res.json({ message: 'Proposal refused' });
+    }
 
     proposal.accepted = accepted;
 
     await proposalsRepository.save(proposal);
 
-    if (accepted) {
-      const schedule = scheduleRepository.create({
-        id_contractor: proposal.id_contractor,
-        id_provider: proposal.id_provider,
-        date: proposal.date,
-      });
+    const schedule = scheduleRepository.create({
+      id_contractor: proposal.id_contractor,
+      id_provider: proposal.id_provider,
+      date: proposal.date,
+    });
 
-      await scheduleRepository.save(schedule);
-    }
+    await scheduleRepository.save(schedule);
 
     return res.json(proposal);
   }

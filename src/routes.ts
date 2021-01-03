@@ -25,7 +25,7 @@ router.patch('/user/:id', upload.single('file'), UserController.update);
 
 router.get('/proposal/:id', ProposalsController.index);
 router.post('/proposal', ProposalsController.store);
-router.patch('/accept/:id_provider', ProposalsController.acceptProposal);
+router.patch('/accept/:id_proposal', ProposalsController.acceptProposal);
 
 router.post('/talent', TalentsController.store);
 router.patch('/talent/:id', upload.single('file'), TalentsController.update);
