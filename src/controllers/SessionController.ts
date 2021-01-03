@@ -24,7 +24,7 @@ class SessionController {
     }
 
     // trocar esse secret, para um atributo no meu .env
-    const token = jwt.sign({ id: user.id }, 'secret', { expiresIn: '1d' });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
     return res.json({
       user: {
