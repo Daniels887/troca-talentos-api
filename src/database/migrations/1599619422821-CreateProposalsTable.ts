@@ -30,6 +30,10 @@ export class CreateProposalsTable1599619422821 implements MigrationInterface {
           default: 'now()',
         },
         {
+          name: 'talentId',
+          type: 'int',
+        },
+        {
           name: 'accepted',
           type: 'boolean',
         },

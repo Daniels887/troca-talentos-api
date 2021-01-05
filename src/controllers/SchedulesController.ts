@@ -43,6 +43,7 @@ class SchedulesController {
     const schedulesOfUser = await schedulesRepository.find({
       where: [{ id_provider: req.params.id },
         { id_contractor: req.params.id }],
+      relations: ['talent'],
     });
 
     return res.json(schedulesOfUser);

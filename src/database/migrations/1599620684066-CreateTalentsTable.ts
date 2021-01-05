@@ -47,6 +47,13 @@ export class CreateTalentsTable1599620684066 implements MigrationInterface {
       referencedTableName: 'users',
       onDelete: 'CASCADE',
     }));
+
+    await queryRunner.createForeignKey('schedules', new TableForeignKey({
+      columnNames: ['talentId'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'talents',
+      onDelete: 'CASCADE',
+    }));
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

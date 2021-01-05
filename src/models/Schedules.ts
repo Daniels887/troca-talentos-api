@@ -1,6 +1,7 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column,
+  Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn,
 } from 'typeorm';
+import Talent from './Talents';
 
 @Entity('schedules')
 export class Schedules {
@@ -12,6 +13,10 @@ export class Schedules {
 
   @Column()
   id_contractor: string
+
+  @OneToOne((type) => Talent)
+  @JoinColumn()
+  talent: Talent;
 
   @Column('timestamp')
   date: Date

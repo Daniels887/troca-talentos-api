@@ -4,6 +4,7 @@ import { getRepository } from 'typeorm';
 import Proposals from '@models/Proposal';
 import Users from '@models/Users';
 import Schedules from '@models/Schedules';
+import Talents from '@models/Talents';
 
 class ProposalsController {
   async index(req: Request, res: Response) {
@@ -24,7 +25,7 @@ class ProposalsController {
     const usersRepository = getRepository(Users);
 
     const {
-      id_provider, id_contractor, tcoin, date,
+      id_provider, id_contractor, tcoin, date, talentId,
     } = req.body;
 
     const existUserProvider = await usersRepository.findOne({ where: { id: id_provider } });
@@ -36,7 +37,7 @@ class ProposalsController {
     }
 
     const tender = proposalsRepository.create({
-      id_provider, id_contractor, tcoin, date, accepted: '',
+      id_provider, id_contractor, tcoin, date, accepted: '', talentId,
     });
 
     await proposalsRepository.save(tender);
@@ -47,6 +48,7 @@ class ProposalsController {
   async acceptProposal(req: Request, res: Response) {
     const proposalsRepository = getRepository(Proposals);
     const scheduleRepository = getRepository(Schedules);
+    const talentRepository = getRepository(Talents);
 
     const { accepted } = req.body;
 
@@ -64,7 +66,7 @@ class ProposalsController {
       return res.status(409).json({ error: 'Proposal already accepted' });
     }
 
-    if (!proposal.accepted) {
+    if (!accepted) {
       await proposalsRepository.delete(proposal);
 
       return res.json({ message: 'Proposal refused' });
@@ -74,10 +76,19 @@ class ProposalsController {
 
     await proposalsRepository.save(proposal);
 
+    const { talentId } = proposal;
+
+    const currentTalent = await talentRepository.findOne({
+      where: {
+        id: talentId,
+      },
+    });
+
     const schedule = scheduleRepository.create({
       id_contractor: proposal.id_contractor,
       id_provider: proposal.id_provider,
       date: proposal.date,
+      talent: currentTalent,
     });
 
     await scheduleRepository.save(schedule);

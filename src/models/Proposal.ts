@@ -20,6 +20,9 @@ export class Proposals {
   date: Date
 
   @Column()
+  talentId: number
+
+  @Column()
   accepted: Boolean
 }
 

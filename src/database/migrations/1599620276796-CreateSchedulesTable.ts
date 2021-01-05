@@ -1,4 +1,6 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface, QueryRunner, Table,
+} from 'typeorm';
 
 export class CreateSchedulesTable1599620276796 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -19,6 +21,10 @@ export class CreateSchedulesTable1599620276796 implements MigrationInterface {
         {
           name: 'id_contractor',
           type: 'uuid',
+        },
+        {
+          name: 'talentId',
+          type: 'int',
         },
         {
           name: 'date',
