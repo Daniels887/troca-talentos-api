@@ -31,6 +31,8 @@ class SessionController {
         username: user.username,
         email: user.email,
         tcoin: user.tcoin,
+        avatar: user.avatar,
+        age: user.age,
       },
       token,
     });
