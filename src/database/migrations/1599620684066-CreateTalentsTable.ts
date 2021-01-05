@@ -31,6 +31,10 @@ export class CreateTalentsTable1599620684066 implements MigrationInterface {
           type: 'float',
         },
         {
+          name: 'tcoin',
+          type: 'int',
+        },
+        {
           name: 'description',
           type: 'varchar',
         },

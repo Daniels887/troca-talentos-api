@@ -8,15 +8,21 @@ class TalentsController {
   async store(req: Request, res: Response) {
     const talentsRepository = getRepository(Talents);
     const usersRepository = getRepository(Users);
+    let banner = '';
 
     const {
-      userId, talent, description,
+      userId, talent, description, tcoin,
     } = req.body;
 
     const userExist = await usersRepository.findOne({ where: { id: userId } });
 
     if (!userExist) {
       return res.status(409).json({ error: 'User not exists' });
+    }
+
+    if (req.file) {
+      const { filename: path } = req.file;
+      banner = path;
     }
 
     const talentExist = await talentsRepository.findOne({ where: { user: userId, talent } });
@@ -26,7 +32,7 @@ class TalentsController {
     }
 
     const newTalent = talentsRepository.create({
-      user: userId, talent, description, rating: 0, banner: '',
+      user: userId, talent, description, rating: 0, banner, tcoin: parseInt(tcoin, 10),
     });
 
     await talentsRepository.save(newTalent);
@@ -59,13 +65,16 @@ class TalentsController {
       currentTalent.banner = path;
     }
 
-    const { talent, description, rating } = req.body;
+    const {
+      talent, description, rating, tcoin,
+    } = req.body;
 
     const ratingMean = currentTalent.rating === 0 ? rating
       : (currentTalent.rating + parseInt(rating, 10)) / 2;
 
     currentTalent.talent = talent;
     currentTalent.description = description;
+    currentTalent.tcoin = tcoin;
     currentTalent.rating = Math.round(ratingMean);
 
     await talentsRepository.save(currentTalent);

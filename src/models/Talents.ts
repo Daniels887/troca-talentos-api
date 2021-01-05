@@ -20,6 +20,9 @@ export class Talents {
   @Column()
   description: string
 
+  @Column()
+  tcoin: number
+
   @ManyToOne((type) => User, (talents) => Talents, { eager: true })
   user: User
 }
