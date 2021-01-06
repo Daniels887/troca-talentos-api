@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Users from '@models/Users';
+import bcrypt from 'bcryptjs';
 import Mail from '../lib/Mail';
 
 class UsersController {
@@ -94,7 +95,7 @@ class UsersController {
     }
 
     if (password) {
-      user.password = password;
+      user.password = bcrypt.hashSync(password, 8);
     }
 
     if (age) {

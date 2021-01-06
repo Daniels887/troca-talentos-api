@@ -31,7 +31,6 @@ export class User {
   talents: Talents[]
 
   @BeforeInsert()
-  @BeforeUpdate()
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);
   }
