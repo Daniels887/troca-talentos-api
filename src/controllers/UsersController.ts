@@ -85,10 +85,21 @@ class UsersController {
       const { filename: path } = req.file;
       user.avatar = path;
     }
-    user.username = username;
-    user.email = email;
-    user.password = password;
-    user.age = parseInt(age, 10);
+
+    if (username) {
+      user.username = username;
+    }
+    if (email) {
+      user.email = email;
+    }
+
+    if (password) {
+      user.password = password;
+    }
+
+    if (age) {
+      user.age = parseInt(age, 10);
+    }
 
     await repository.save(user);
 

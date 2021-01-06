@@ -29,7 +29,7 @@ router.patch('/accept/:id_proposal', ProposalsController.acceptProposal);
 
 router.post('/talent', upload.single('file'), TalentsController.store);
 router.patch('/talent/:id', upload.single('file'), TalentsController.update);
-router.get('/talent/:title', TalentsController.showUsersByTalent);
+router.get('/talent/:title?', TalentsController.showUsersByTalent);
 
 router.post('/schedule', SchedulesController.store);
 router.get('/schedules/:id', SchedulesController.show_by_id);

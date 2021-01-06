@@ -43,12 +43,17 @@ class TalentsController {
   async showUsersByTalent(req: Request, res: Response) {
     const talentRepository = getRepository(Talents);
 
-    const allUsersFilteredByTalent = await talentRepository.find({
-      where:
-      { talent: req.params.title },
-    });
+    if (req.params.title) {
+      const allUsersFilteredByTalent = await talentRepository.find({
+        where:
+        { talent: req.params.title },
+      });
+      return res.json(allUsersFilteredByTalent);
+    }
 
-    return res.json(allUsersFilteredByTalent);
+    const allTalents = await talentRepository.find();
+
+    return res.json(allTalents);
   }
 
   async update(req: Request, res: Response) {
