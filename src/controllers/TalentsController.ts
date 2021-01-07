@@ -85,6 +85,18 @@ class TalentsController {
 
     return res.json(currentTalent);
   }
+
+  async show_by_id(req: Request, res: Response) {
+    const talentsRepository = getRepository(Talents);
+
+    const talent = await talentsRepository.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.json(talent);
+  }
 }
 
 export default new TalentsController();
