@@ -45,6 +45,7 @@ class TalentsController {
 
     if (req.params.title) {
       const allUsersFilteredByTalent = await talentRepository.createQueryBuilder('talents')
+        .leftJoinAndSelect('talents.user', 'user')
         .where('LOWER(talents.talent) like LOWER(:talent)', { talent: `%${req.params.title}%` })
         .getMany();
       return res.json(allUsersFilteredByTalent);
