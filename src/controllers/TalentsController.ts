@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository, Like } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import Talents from '@models/Talents';
 import Users from '@models/Users';
@@ -50,7 +50,10 @@ class TalentsController {
       return res.json(allUsersFilteredByTalent);
     }
 
-    const allTalents = await talentRepository.find();
+    const allTalents = await talentRepository.createQueryBuilder('talents')
+      .leftJoinAndSelect('talents.user', 'user')
+      .orderBy('RANDOM()')
+      .getMany();
 
     return res.json(allTalents);
   }
