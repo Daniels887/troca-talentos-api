@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, Like } from 'typeorm';
 
 import Talents from '@models/Talents';
 import Users from '@models/Users';
@@ -44,10 +44,9 @@ class TalentsController {
     const talentRepository = getRepository(Talents);
 
     if (req.params.title) {
-      const allUsersFilteredByTalent = await talentRepository.find({
-        where:
-        { talent: req.params.title },
-      });
+      const allUsersFilteredByTalent = await talentRepository.createQueryBuilder('talents')
+        .where('LOWER(talents.talent) like LOWER(:talent)', { talent: `%${req.params.title}%` })
+        .getMany();
       return res.json(allUsersFilteredByTalent);
     }
 
