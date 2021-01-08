@@ -35,4 +35,6 @@ router.get('/talent/detail/:id', TalentsController.show_by_id);
 router.post('/schedule', SchedulesController.store);
 router.get('/schedules/:id', SchedulesController.show_by_id);
 
+router.get('/notifications/:id', SchedulesController.show_last);
+
 export default router;

@@ -14,6 +14,9 @@ export class Schedules {
   @Column()
   id_contractor: string
 
+  @Column()
+  finish: boolean
+
   @OneToOne((type) => Talent)
   @JoinColumn()
   talent: Talent;

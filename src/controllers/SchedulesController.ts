@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
-import { format, parseISO, compareAsc } from 'date-fns';
+import { getRepository, MoreThanOrEqual } from 'typeorm';
+import {
+  format, parseISO, compareAsc,
+} from 'date-fns';
 
 import Schedules from '@models/Schedules';
+import Proposals from '@models/Proposal';
 
 class SchedulesController {
   async store(req: Request, res: Response) {
@@ -47,6 +50,38 @@ class SchedulesController {
     });
 
     return res.json(schedulesOfUser);
+  }
+
+  async show_last(req: Request, res: Response) {
+    const schedulesRepository = getRepository(Schedules);
+    const proposalRepository = getRepository(Proposals);
+
+    const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+
+    const lastSchedule = await schedulesRepository.findOne({
+      where: {
+        finish: false,
+        id_contractor: req.params.id,
+        date: MoreThanOrEqual(currentDate),
+      },
+      order: {
+        id: 'DESC',
+      },
+    });
+
+    const newProposals = await proposalRepository.find({
+      where: {
+        accepted: '',
+        id_provider: req.params.id,
+      },
+    });
+
+    const response = {
+      proposals: newProposals,
+      finished_schedule: lastSchedule,
+    };
+
+    return res.json(response);
   }
 }
 

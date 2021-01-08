@@ -5,6 +5,8 @@ import Proposals from '@models/Proposal';
 import Users from '@models/Users';
 import Schedules from '@models/Schedules';
 import Talents from '@models/Talents';
+import { compareAsc, format } from 'date-fns';
+import { parseISO } from 'date-fns/fp';
 
 class ProposalsController {
   async index(req: Request, res: Response) {
@@ -22,27 +24,38 @@ class ProposalsController {
 
   async store(req: Request, res: Response) {
     const proposalsRepository = getRepository(Proposals);
-    const usersRepository = getRepository(Users);
 
     const {
       id_provider, id_contractor, tcoin, date, talentId,
     } = req.body;
 
-    const existUserProvider = await usersRepository.findOne({ where: { id: id_provider } });
+    const providerProposalExist = await proposalsRepository.findOne({
+      where: [{ id_provider, date }, { id_provider: id_contractor, date }],
+    });
 
-    const existUserContractor = await usersRepository.findOne({ where: { id: id_contractor } });
+    const contractorProposalExist = await proposalsRepository.findOne({
+      where: [{ id_contractor, date }, { id_contractor: id_provider, date }],
+    });
 
-    if (!existUserProvider && !existUserContractor) {
-      return res.status(409).json({ error: 'Provider or contractor not exist' });
+    const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+
+    const compareDates = compareAsc(parseISO(date), parseISO(currentDate));
+
+    if (compareDates === -1) {
+      return res.status(400).json({ error: 'Date entered is less than the current' });
     }
 
-    const tender = proposalsRepository.create({
+    if (providerProposalExist || contractorProposalExist) {
+      return res.status(409).json({ error: 'Provider or contractor is not available' });
+    }
+
+    const proposal = proposalsRepository.create({
       id_provider, id_contractor, tcoin, date, accepted: '', talentId,
     });
 
-    await proposalsRepository.save(tender);
+    await proposalsRepository.save(proposal);
 
-    return res.json(tender);
+    return res.json(proposal);
   }
 
   async acceptProposal(req: Request, res: Response) {
@@ -62,11 +75,11 @@ class ProposalsController {
       return res.status(409).json({ error: 'User is not a provider' });
     }
 
-    if (proposal.accepted && accepted) {
+    if (proposal.accepted === 'Y') {
       return res.status(409).json({ error: 'Proposal already accepted' });
     }
 
-    if (!accepted) {
+    if (accepted === 'N') {
       await proposalsRepository.delete(proposal);
 
       return res.json({ message: 'Proposal refused' });
@@ -89,6 +102,7 @@ class ProposalsController {
       id_provider: proposal.id_provider,
       date: proposal.date,
       talent: currentTalent,
+      finish: false,
     });
 
     await scheduleRepository.save(schedule);

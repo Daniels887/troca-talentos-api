@@ -30,6 +30,10 @@ export class CreateSchedulesTable1599620276796 implements MigrationInterface {
           name: 'date',
           type: 'timestamp',
         },
+        {
+          name: 'finish',
+          type: 'boolean',
+        },
       ],
     }));
   }

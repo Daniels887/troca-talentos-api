@@ -23,7 +23,7 @@ export class Proposals {
   talentId: number
 
   @Column()
-  accepted: Boolean
+  accepted: string
 }
 
 export default Proposals;
