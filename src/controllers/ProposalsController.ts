@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
 import Proposals from '@models/Proposal';
-import Users from '@models/Users';
 import Schedules from '@models/Schedules';
 import Talents from '@models/Talents';
 import { compareAsc, format } from 'date-fns';

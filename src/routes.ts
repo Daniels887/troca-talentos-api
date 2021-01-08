@@ -31,6 +31,7 @@ router.post('/talent', upload.single('file'), TalentsController.store);
 router.patch('/talent/:id', upload.single('file'), TalentsController.update);
 router.get('/talent/:title?', TalentsController.showUsersByTalent);
 router.get('/talent/detail/:id', TalentsController.show_by_id);
+router.get('/talents/:user_id', TalentsController.my_talents);
 
 router.post('/schedule', SchedulesController.store);
 router.get('/schedules/:id', SchedulesController.show_by_id);

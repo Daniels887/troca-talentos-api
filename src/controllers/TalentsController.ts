@@ -101,6 +101,19 @@ class TalentsController {
 
     return res.json(talent);
   }
+
+  async my_talents(req: Request, res: Response) {
+    const talentsRepository = getRepository(Talents);
+
+    const all_talents = await talentsRepository.find({
+      where: {
+        user: req.params.user_id,
+      },
+      relations: ['user'],
+    });
+
+    return res.json(all_talents);
+  }
 }
 
 export default new TalentsController();
