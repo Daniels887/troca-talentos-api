@@ -4,6 +4,8 @@ import { getRepository } from 'typeorm';
 import Proposals from '@models/Proposal';
 import Schedules from '@models/Schedules';
 import Talents from '@models/Talents';
+import User from '@models/Users';
+
 import { compareAsc, format } from 'date-fns';
 import { parseISO } from 'date-fns/fp';
 
@@ -11,14 +13,12 @@ class ProposalsController {
   async index(req: Request, res: Response) {
     const proposalsRepository = getRepository(Proposals);
 
-    const allTenders = await proposalsRepository.find({
-      where: [
-        { id_provider: req.params.id },
-        { id_contractor: req.params.id },
-      ],
-    });
+    const allProposals = await proposalsRepository.createQueryBuilder('proposals')
+      .innerJoinAndMapMany('proposals.users_data', User, 'user', 'proposals.id_contractor = user.id OR proposals.id_provider = user.id')
+      .where('proposals.id_contractor = :id_contractor OR proposals.id_provider = :id_provider', { id_provider: req.params.id, id_contractor: req.params.id })
+      .getMany();
 
-    return res.json(allTenders);
+    return res.json(allProposals);
   }
 
   async store(req: Request, res: Response) {
