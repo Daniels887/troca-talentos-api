@@ -77,13 +77,9 @@ class TalentsController {
       talent, description, tcoin,
     } = req.body;
 
-    // const ratingMean = currentTalent.rating === 0 ? rating
-    //   : (currentTalent.rating + parseInt(rating, 10)) / 2;
-
     currentTalent.talent = talent;
     currentTalent.description = description;
     currentTalent.tcoin = parseInt(tcoin, 10);
-    // currentTalent.rating = Math.round(ratingMean);
 
     await talentsRepository.save(currentTalent);
 

@@ -6,6 +6,8 @@ import {
 
 import Schedules from '@models/Schedules';
 import Proposals from '@models/Proposal';
+import Talents from '@models/Talents';
+import Users from '@models/Users';
 
 class SchedulesController {
   async store(req: Request, res: Response) {
@@ -78,10 +80,71 @@ class SchedulesController {
 
     const response = {
       proposals: newProposals,
-      finished_schedule: lastSchedule,
+      finished_schedule: lastSchedule || {},
     };
 
     return res.json(response);
+  }
+
+  async finish(req: Request, res: Response) {
+    const schedulesRepository = getRepository(Schedules);
+    const talentsRepository = getRepository(Talents);
+    const usersRepository = getRepository(Users);
+    const proposalRepository = getRepository(Proposals);
+
+    const schedule = await schedulesRepository.findOne({
+      where: {
+        id: req.params.id,
+      },
+      relations: ['talent'],
+    });
+
+    const talent = await talentsRepository.findOne({
+      where: {
+        id: schedule.talent.id,
+      },
+    });
+
+    const { rating } = req.body;
+
+    const ratingMean = talent.rating === 0 ? rating
+      : (talent.rating + parseInt(rating, 10)) / 2;
+
+    talent.rating = Math.round(ratingMean);
+
+    await talentsRepository.save(talent);
+
+    schedule.finish = true;
+
+    await schedulesRepository.save(schedule);
+
+    const user_contractor = await usersRepository.findOne({
+      where: {
+        id: schedule.id_contractor,
+      },
+    });
+
+    const user_provider = await usersRepository.findOne({
+      where: {
+        id: schedule.id_provider,
+      },
+    });
+
+    const proposal = await proposalRepository.findOne({
+      where: {
+        id_contractor: schedule.id_contractor,
+        id_provider: schedule.id_provider,
+        date: schedule.date,
+      },
+    });
+
+    user_contractor.tcoin -= proposal.tcoin;
+    user_provider.tcoin += proposal.tcoin;
+
+    await usersRepository.save(user_contractor);
+    await usersRepository.save(user_provider);
+
+    return res.json({ success: true });
   }
 }
 
