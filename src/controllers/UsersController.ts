@@ -46,7 +46,7 @@ class UsersController {
 
     const randomPassword = Math.random().toString(36).slice(-8);
 
-    user.password = randomPassword;
+    user.password = bcrypt.hashSync(randomPassword, 8);
 
     await repository.save(user);
 
