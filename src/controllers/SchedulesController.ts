@@ -45,11 +45,11 @@ class SchedulesController {
   async show_by_id(req: Request, res: Response) {
     const schedulesRepository = getRepository(Schedules);
 
-    const schedulesOfUser = await schedulesRepository.find({
-      where: [{ id_provider: req.params.id },
-        { id_contractor: req.params.id }],
-      relations: ['talent'],
-    });
+    const schedulesOfUser = await schedulesRepository.createQueryBuilder('schedules')
+      .leftJoinAndSelect('schedules.talent', 'talent')
+      .innerJoinAndMapMany('schedules.users_data', Users, 'user', 'schedules.id_contractor = user.id OR schedules.id_provider = user.id')
+      .where('schedules.id_contractor = :id_contractor OR schedules.id_provider = :id_provider', { id_provider: req.params.id, id_contractor: req.params.id })
+      .getMany();
 
     return res.json(schedulesOfUser);
   }
