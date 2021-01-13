@@ -78,9 +78,15 @@ class SchedulesController {
       },
     });
 
+    const proposalsCanceled = await proposalRepository.createQueryBuilder('proposals')
+      .innerJoinAndMapMany('proposals.talent', Talents, 'talents', 'proposals.talentId = talents.id')
+      .where('proposals.accepted = :accepted', { accepted: 'C' })
+      .getMany();
+
     const response = {
       proposals: newProposals,
       finished_schedule: lastSchedule || null,
+      canceled: proposalsCanceled,
     };
 
     return res.json(response);
@@ -145,6 +151,33 @@ class SchedulesController {
     await usersRepository.save(user_provider);
 
     return res.json({ success: true });
+  }
+
+  async delete(req: Request, res: Response) {
+    const schedulesRepository = getRepository(Schedules);
+    const proposalRepository = getRepository(Proposals);
+
+    const schedule = await schedulesRepository.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    const proposal = await proposalRepository.findOne({
+      where: {
+        id_contractor: schedule.id_contractor,
+        id_provider: schedule.id_provider,
+        date: schedule.date,
+      },
+    });
+
+    proposal.accepted = 'C';
+
+    await proposalRepository.save(proposal);
+
+    await schedulesRepository.delete(schedule);
+
+    return res.json({ message: 'Schedule deleted' });
   }
 }
 

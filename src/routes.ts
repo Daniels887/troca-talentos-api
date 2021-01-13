@@ -35,6 +35,7 @@ router.get('/talents/:user_id', TalentsController.my_talents);
 
 router.post('/schedule', SchedulesController.store);
 router.get('/schedules/:id', SchedulesController.show_by_id);
+router.delete('/schedule/:id', SchedulesController.delete);
 
 router.post('/finish/schedule/:id', SchedulesController.finish);
 
