@@ -40,5 +40,6 @@ router.delete('/schedule/:id', SchedulesController.delete);
 router.post('/finish/schedule/:id', SchedulesController.finish);
 
 router.get('/notifications/:id', SchedulesController.show_last);
+router.get('/notification/confirm/:id', SchedulesController.view_notification);
 
 export default router;
