@@ -179,31 +179,6 @@ class SchedulesController {
 
     return res.json({ message: 'Schedule deleted' });
   }
-
-  async view_notification(req: Request, res: Response) {
-    const schedulesRepository = getRepository(Schedules);
-    const proposalRepository = getRepository(Proposals);
-
-    const schedule = await schedulesRepository.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
-
-    const proposal = await proposalRepository.findOne({
-      where: {
-        id_contractor: schedule.id_contractor,
-        id_provider: schedule.id_provider,
-        date: schedule.date,
-      },
-    });
-
-    proposal.accepted = 'T';
-
-    await proposalRepository.save(proposal);
-
-    return res.json({ message: 'Notification visualized' });
-  }
 }
 
 export default new SchedulesController();
