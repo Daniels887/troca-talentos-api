@@ -80,7 +80,7 @@ class SchedulesController {
 
     const response = {
       proposals: newProposals,
-      finished_schedule: lastSchedule || {},
+      finished_schedule: lastSchedule || null,
     };
 
     return res.json(response);
