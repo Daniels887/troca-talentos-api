@@ -46,13 +46,14 @@ class TalentsController {
     if (req.params.title) {
       const allUsersFilteredByTalent = await talentRepository.createQueryBuilder('talents')
         .leftJoinAndSelect('talents.user', 'user')
-        .where('LOWER(talents.talent) like LOWER(:talent)', { talent: `%${req.params.title}%` })
+        .where('LOWER(talents.talent) like LOWER(:talent) AND talents.user != :user_id', { talent: `%${req.params.title}%`, user_id: req.params.user_id })
         .getMany();
       return res.json(allUsersFilteredByTalent);
     }
 
     const allTalents = await talentRepository.createQueryBuilder('talents')
       .leftJoinAndSelect('talents.user', 'user')
+      .where('talents.user != :user_id', { user_id: req.params.user_id })
       .orderBy('RANDOM()')
       .getMany();
 
