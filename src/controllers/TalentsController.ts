@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 
 import Talents from '@models/Talents';
 import Users from '@models/Users';
+import Schedules from '@models/Schedules';
 
 class TalentsController {
   async store(req: Request, res: Response) {
@@ -110,6 +111,33 @@ class TalentsController {
     });
 
     return res.json(all_talents);
+  }
+
+  async delete(req: Request, res: Response) {
+    const talentRepository = getRepository(Talents);
+    const schedulesRepository = getRepository(Schedules);
+
+    const talent = await talentRepository.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    const schedules = await schedulesRepository.find({
+      where: {
+        talent: req.params.id,
+        finish: false,
+      },
+      relations: ['talent'],
+    });
+
+    if (schedules.length > 0) {
+      return res.status(409).json({ message: 'Você tem um agendamento em andamento, finalize o serviço primeiro antes de deletar o talento!' });
+    }
+
+    await talentRepository.delete(talent);
+
+    return res.json({ message: 'Talent deleted' });
   }
 }
 

@@ -23,28 +23,42 @@ class ProposalsController {
 
   async store(req: Request, res: Response) {
     const proposalsRepository = getRepository(Proposals);
+    const scheduleRepository = getRepository(Schedules);
+    const userRepository = getRepository(User);
 
     const {
       id_provider, id_contractor, tcoin, date, talentId,
     } = req.body;
 
-    const providerProposalExist = await proposalsRepository.findOne({
-      where: [{ id_provider, date }, { id_provider: id_contractor, date }],
+    const providerScheduleExist = await scheduleRepository.findOne({
+      where: [{ id_provider, date, finish: false },
+        { id_provider: id_contractor, date, finish: false }],
     });
 
-    const contractorProposalExist = await proposalsRepository.findOne({
-      where: [{ id_contractor, date }, { id_contractor: id_provider, date }],
+    const contractorScheduleExist = await scheduleRepository.findOne({
+      where: [{ id_contractor, date, finish: false },
+        { id_contractor: id_provider, date, finish: false }],
+    });
+
+    const contractorUser = await userRepository.findOne({
+      where: {
+        id: id_contractor,
+      },
     });
 
     const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
 
     const compareDates = compareAsc(parseISO(date), parseISO(currentDate));
 
+    if (contractorUser.tcoin < 0) {
+      return res.status(409).json({ error: 'Do you not have tcoins' });
+    }
+
     if (compareDates === -1) {
       return res.status(400).json({ error: 'Date entered is less than the current' });
     }
 
-    if (providerProposalExist || contractorProposalExist) {
+    if (providerScheduleExist || contractorScheduleExist) {
       return res.status(409).json({ error: 'Provider or contractor is not available' });
     }
 
