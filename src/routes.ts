@@ -30,7 +30,7 @@ router.patch('/accept/:id_proposal', ProposalsController.acceptProposal);
 router.post('/talent', upload.single('file'), TalentsController.store);
 router.patch('/talent/:id', upload.single('file'), TalentsController.update);
 router.get('/talent/:user_id/:title?', TalentsController.showUsersByTalent);
-router.get('/talent/detail/:id', TalentsController.show_by_id);
+router.get('/detail/talent/:id', TalentsController.show_by_id);
 router.get('/talents/:user_id', TalentsController.my_talents);
 router.delete('/talent/:id', TalentsController.delete);
 
