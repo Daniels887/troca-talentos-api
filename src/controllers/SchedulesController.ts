@@ -80,7 +80,7 @@ class SchedulesController {
 
     const proposalsCanceled = await proposalRepository.createQueryBuilder('proposals')
       .innerJoinAndMapMany('proposals.talent', Talents, 'talents', 'proposals.talentId = talents.id')
-      .where('proposals.accepted = :accepted', { accepted: 'C' })
+      .where('(proposals.id_contractor = :id_contractor OR proposals.id_provider = :id_provider) AND proposals.accepted = :accepted', { accepted: 'C', id_contractor: req.params.id, id_provider: req.params.id })
       .getMany();
 
     const response = {
