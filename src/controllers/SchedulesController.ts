@@ -157,7 +157,7 @@ class SchedulesController {
     await usersRepository.save(user_contractor);
     await usersRepository.save(user_provider);
 
-    return res.json({ success: true });
+    return res.json({ tcoin: user_contractor.tcoin });
   }
 
   async delete(req: Request, res: Response) {
