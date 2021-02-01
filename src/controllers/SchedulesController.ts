@@ -67,6 +67,10 @@ class SchedulesController {
       },
     });
 
+    if (!schedule) {
+      return res.status(409).json({ error: 'Schedule not exist' });
+    }
+
     const lastSchedule = await schedulesRepository.findOne({
       where: {
         finish: false,
