@@ -67,20 +67,20 @@ class SchedulesController {
       },
     });
 
-    if (!schedule) {
-      return res.status(409).json({ error: 'Schedule not exist' });
-    }
+    let lastSchedule = null;
 
-    const lastSchedule = await schedulesRepository.findOne({
-      where: {
-        finish: false,
-        id_contractor: req.params.id,
-        date: MoreThanOrEqual(schedule.date),
-      },
-      order: {
-        id: 'DESC',
-      },
-    });
+    if (schedule) {
+      lastSchedule = await schedulesRepository.findOne({
+        where: {
+          finish: false,
+          id_contractor: req.params.id,
+          date: MoreThanOrEqual(schedule.date),
+        },
+        order: {
+          id: 'DESC',
+        },
+      });
+    }
 
     const newProposals = await proposalRepository.find({
       where: {
@@ -96,7 +96,7 @@ class SchedulesController {
 
     const response = {
       proposals: newProposals,
-      finished_schedule: lastSchedule || null,
+      finished_schedule: lastSchedule,
       canceled: proposalsCanceled,
     };
 
