@@ -60,11 +60,18 @@ class SchedulesController {
 
     const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
 
+    const schedule = await schedulesRepository.findOne({
+      where: {
+        finish: false,
+        id_contractor: req.params.id,
+      },
+    });
+
     const lastSchedule = await schedulesRepository.findOne({
       where: {
         finish: false,
         id_contractor: req.params.id,
-        date: MoreThanOrEqual(currentDate),
+        date: MoreThanOrEqual(schedule.date),
       },
       order: {
         id: 'DESC',
