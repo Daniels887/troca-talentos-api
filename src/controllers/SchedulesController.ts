@@ -79,6 +79,7 @@ class SchedulesController {
         order: {
           id: 'DESC',
         },
+        relations: ['talent'],
       });
     }
 
